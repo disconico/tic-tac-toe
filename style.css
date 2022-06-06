@@ -1,5 +1,22 @@
+@font-face {
+    font-family: 'star-wars';
+    src: url(./fonts/Starjedi.ttf);
+}
+
+:root {
+    font-family: 'star-wars', sans-serif;
+}
+
 body {
-    font-family: "Arial", sans-serif;
+    color:whitesmoke;
+    box-sizing: border-box;
+    background: rgb(35,85,213);
+    background: linear-gradient(100deg, rgba(35,85,213,0.9) 49%, rgba(255,0,108,1) 90%);
+    height: 100vh;
+}
+
+h1 {
+    font-size: 36px
 }
 
 section {
@@ -9,18 +26,47 @@ section {
 .game--container {
     display: grid;
     grid-template-columns: repeat(3, auto);
-    width: 306px;
+    width: fit-content;
     margin: 50px auto;
+    padding: auto;
+    border : 5px solid whitesmoke;
+    border-radius: 3%;
+    box-shadow: 0px 0px 12px -2px rgba(0, 0, 0, 0.902);
+
 }
 
 .field {
     font-family: "Permanent Marker", cursive;
     width: 100px;
     height: 100px;
-    box-shadow: 0 0 0 1px #333333;
-    border: 1px solid #333333;
+    /* box-shadow: 0 0 0 1px #333333; */
+    border: 2px solid whitesmoke;
     cursor: pointer;
     line-height: 100px;
     font-size: 60px;
 }
 
+.game--container .empty {
+    background-color: grey;
+}
+
+.game--container .X {
+    background: url(./images/lightsaber.png);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: 90%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.game--container .O {
+    background: url(./images/jedi.png);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: 83%;  
+    background-repeat: no-repeat;
+    background-position: center;
+
+}

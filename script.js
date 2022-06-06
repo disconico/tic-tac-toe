@@ -24,59 +24,47 @@ const gameBoard = (() => {
         }
     }
 
-    const fieldElements = document.querySelectorAll(".field")
-    fieldElements.forEach((field) => field.addEventListener('click', (e) => {
-        targetIndex = parseInt(e.target.id)
-        gameBoard.setField(targetIndex, gameRules.activePlayer.sign)
-        field.innerHTML = gameBoard.getField(targetIndex)
-
-        switchPlayers()
-        
-    }))
-
-    const switchPlayers = () => {
-        if (gameRules.activePlayer.name === 'Player 1') {
-            gameRules.activePlayer = gameRules.playerTwo
-        } else if (gameRules.activePlayer.name === 'Player 2') {
-            gameRules.activePlayer = gameRules.playerOne
-        }
-    }
-
-    const restartButton = document.getElementById("restart-button");
-    restartButton.addEventListener('click', () => {
-        reset();
-        fieldElements.forEach((field) => {
-            field.innerHTML = ""
-        })
-    }
-    )
-
     return {
-         board, getField, setField,
+        board, reset, getField, setField,
     }
 })();
 
-// // display events
-// const displayEvents = (() => {
 
-//     const fieldElements = document.querySelectorAll(".field")
-//     const messageElement = document.getElementById("message");
-//     const restartButton = document.getElementById("restart-button");
 
-//     const setDisplay = () => {
-//         for (let i = 0; i < gameBoard.board.length; i++) {
-//             fieldElements.forEach((field) => {
-//                 field.innerHTML = gameBoard.board[i]
-//             })
-//         }
-//     }
+// display events 
+const gameDisplay = (() => {
 
-//     return {
-//         setDisplay
-//     }
+    const fieldElements = document.querySelectorAll(".field")
+    fieldElements.forEach((field) => field.addEventListener('click', (e) => {
+        targetIndex = parseInt(e.target.id)
+        if (gameBoard.getField(targetIndex) != "" || gameRules.getIsOver()) {
+            return
+        } else {
+            gameBoard.setField(targetIndex, gameRules.activePlayer.sign)
+            field.classList.add(gameBoard.getField(targetIndex))
+            field.classList.remove('empty')
 
-// })()
+            gameRules.playCounter++
+            gameRules.checkGameStatus()
+            gameRules.switchPlayers()
+            gameRules.displayMessage()
+        }
+    }))
 
+    const restartButton = document.getElementById("restart-button");
+    restartButton.addEventListener('click', () => {
+        gameBoard.reset();
+        fieldElements.forEach((field) => {
+            field.classList.remove('X')
+            field.classList.remove('O')
+            field.classList.add('empty')
+        });
+        gameRules.reset()
+        gameRules.activePlayer = gameRules.playerOne
+        gameRules.displayMessage()
+    }
+    )
+})()
 
 // game rules
 const gameRules = (() => {
@@ -85,15 +73,106 @@ const gameRules = (() => {
     const playerTwo = createPlayer('Player 2', 'O');
     console.log(playerOne, playerTwo)
 
-
     let gameEnd = false
-    let round = 1
+    let winnerDeclared = false
     let activePlayer = playerOne
+    let playCounter = 0;
 
-    return {
-        playerOne, playerTwo, activePlayer
+    const textMessage = document.getElementById('message')
+
+    const switchPlayers = () => {
+        if (gameEnd === false) {
+            if (gameRules.activePlayer.name === 'Player 1') {
+                gameRules.activePlayer = gameRules.playerTwo
+            } else if (gameRules.activePlayer.name === 'Player 2') {
+                gameRules.activePlayer = gameRules.playerOne
+            }
+        } else {
+            return
+        }
+    }
+
+    const checkGameStatus = () => {
+
+        console.log(gameRules.playCounter)
+        const winningConditions = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+
+        if (gameRules.playCounter < 9) {
+
+            for (let i = 0; i < winningConditions.length; i++) {
+                const winArray = winningConditions[i]
+                let a = gameBoard.board[winArray[0]]
+                let b = gameBoard.board[winArray[1]]
+                let c = gameBoard.board[winArray[2]]
+                if (a === '' || b === '' || c === '') {
+                    continue
+                }
+                if (a === b && b === c) {
+                    gameEnd = true;
+                    winnerDeclared = true;
+                }
+            }
+        } else if (gameRules.playCounter === 9) {
+            for (let i = 0; i < winningConditions.length; i++) {
+                const winOtherArray = winningConditions[i]
+                let a = gameBoard.board[winOtherArray[0]]
+                let b = gameBoard.board[winOtherArray[1]]
+                let c = gameBoard.board[winOtherArray[2]]
+                if (a === b && b === c) {
+                    gameEnd = true;
+                    winnerDeclared = true;
+                } else {
+                    gameEnd = true
+                    winnerDeclared = false
+                }
+            }
+        }
+    }
+
+    const displayMessage = () => {
+
+        if (gameEnd === true && winnerDeclared === true) {
+            textMessage.innerText = `${gameRules.activePlayer.name} won the game !`
+        } else if (gameEnd === true && winnerDeclared === false) {
+            textMessage.innerText = `it's a draw, play again!`
+        } else if (gameEnd === false && gameRules.activePlayer === playerOne) {
+            textMessage.innerText = `it's ${playerOne.name} turn!`
+        } else if (gameEnd === false && gameRules.activePlayer === playerTwo) {
+            textMessage.innerText = `it's ${playerTwo.name} turn!`
+        }
+    }
+
+    const getIsOver = () => {
+        return gameEnd
+    }
+
+    const getWinner = () => {
+        return winnerDeclared
+    }
+
+    const getCounter = () => {
+        return playCounter
     }
 
 
-})();
+    const reset = () => {
+        gameEnd = false
+    winnerDeclared = false
+    activePlayer = playerOne
+    gameRules.playCounter = 0
+    }
 
+    return {
+        playerOne, playerTwo, activePlayer, switchPlayers, checkGameStatus, displayMessage, reset, playCounter, getIsOver, getWinner, getCounter
+    }
+
+})();
