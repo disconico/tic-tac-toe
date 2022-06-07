@@ -8,15 +8,25 @@
 }
 
 body {
-    color:whitesmoke;
+    color: whitesmoke;
     box-sizing: border-box;
-    background: rgb(35,85,213);
-    background: linear-gradient(100deg, rgba(35,85,213,0.9) 49%, rgba(255,0,108,1) 90%);
+    background: rgb(35, 85, 213);
+    background: linear-gradient(105deg, rgba(35, 85, 213, 0.9) 49%, rgba(255, 0, 108, 1) 90%);
     height: 100vh;
+    width: 100vw;
 }
 
 h1 {
-    font-size: 36px
+    font-size: 36px;
+}
+
+h1:hover {
+    text-shadow: 0 0 10px orange,
+    0 0 50px orange,
+    0 0 50px orange,
+    0 0 300px orange;
+    transition: 0.3s;
+
 }
 
 section {
@@ -29,17 +39,15 @@ section {
     width: fit-content;
     margin: 50px auto;
     padding: auto;
-    border : 5px solid whitesmoke;
+    border: 5px solid whitesmoke;
     border-radius: 3%;
     box-shadow: 0px 0px 12px -2px rgba(0, 0, 0, 0.902);
 
 }
 
 .field {
-    font-family: "Permanent Marker", cursive;
-    width: 100px;
-    height: 100px;
-    /* box-shadow: 0 0 0 1px #333333; */
+    width: 150px;
+    height: 150px;
     border: 2px solid whitesmoke;
     cursor: pointer;
     line-height: 100px;
@@ -47,8 +55,14 @@ section {
 }
 
 .game--container .empty {
-    background-color: grey;
+    background-color: #6d6969;
 }
+
+.game--container .empty:hover {
+    background-color: #a3a0a0;
+}
+
+
 
 .game--container .X {
     background: url(./images/lightsaber.png);
@@ -65,8 +79,30 @@ section {
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
-    background-size: 83%;  
+    background-size: 83%;
     background-repeat: no-repeat;
     background-position: center;
 
+}
+
+.game--restart {
+    font-family: 'star-wars', sans-serif;
+    width: 200px;
+    /* padding: 0px 20px; */
+    padding: 3px 0px;
+    background-color: whitesmoke;
+    color: #050801;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: 0.5s;
+    letter-spacing: 3px;
+}
+
+.game--restart:hover {
+    background-color: #9e9999;
+    color: whitesmoke;
+    box-shadow: 0 0 10px orange,
+        0 0 50px orange,
+        0 0 50px orange,
+        0 0 300px orange;
 }
