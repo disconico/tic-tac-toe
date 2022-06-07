@@ -43,28 +43,13 @@
                 gameBoard.setField(targetIndex, gameRules.activePlayer.sign)
                 field.classList.add(gameBoard.getField(targetIndex))
                 field.classList.remove('empty')
-                
-                playSound()
+
                 gameRules.playCounter++
                 gameRules.checkGameStatus()
                 gameRules.switchPlayers()
                 gameRules.displayMessage()
             }
         }))
-
-        function playSound () {
-            // const musicPlayerOne = new Audio('./music/sith.mp3')
-            // const musicPlayerTwo = new Audio('./music/jedi.mp3')
-            // if (gameRules.activePlayer.name === 'Player 1') {
-            //     musicPlayerTwo.pause()
-            //     musicPlayerOne.currentTime = 0
-            //     musicPlayerOne.play()
-            // } else if (gameRules.activePlayer.name === 'Player 2') {
-            //     musicPlayerOne.pause()
-            //     musicPlayerTwo.currentTime = 0
-            //     musicPlayerTwo.play()
-            // }
-        }
 
         const restartButton = document.getElementById("restart-button");
         restartButton.addEventListener('click', () => {
